@@ -1,25 +1,35 @@
-
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>بوت الدردشة الذكي</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+      /* Using a class for dark mode styles */
+      .dark ::-webkit-scrollbar-track {
+        background: #1e1f22; 
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #4f4f52;
+      }
+      .dark ::-webkit-scrollbar-thumb:hover {
+        background: #6b6b6e;
+      }
+
       /* Custom scrollbar for webkit browsers */
       ::-webkit-scrollbar {
         width: 8px;
       }
       ::-webkit-scrollbar-track {
-        background: #1e1f22; 
+        background: #f1f5f9; 
       }
       ::-webkit-scrollbar-thumb {
-        background: #4f4f52;
+        background: #94a3b8;
         border-radius: 4px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #6b6b6e;
+        background: #64748b;
       }
 
       /* Glitch effects for BETA model */
@@ -59,6 +69,12 @@
           animation: subtle-window-glitch 4s infinite alternate;
       }
     </style>
+  <script>
+    // Set dark mode via class, needed for Tailwind CSS
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
   <script type="importmap">
 {
   "imports": {
@@ -71,7 +87,7 @@
 }
 </script>
 </head>
-  <body class="bg-gray-900 text-white font-sans">
+  <body class="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-white font-sans transition-colors duration-300">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>

@@ -1,4 +1,3 @@
-
 import { GoogleGenAI, GenerateContentResponse, Chat } from '@google/genai';
 import { GroundingSource } from '../types';
 
@@ -26,7 +25,7 @@ export const generateBetaResponse = async (
     return { text, sources: sources as GroundingSource[] };
   } catch (error) {
     console.error('Error in generateBetaResponse:', error);
-    throw new Error('فشل في إنشاء استجابة بيتا.');
+    throw new Error('ERROR_BETA_RESPONSE');
   }
 };
 
@@ -46,19 +45,19 @@ export const generateImage = async (prompt: string): Promise<string> => {
       const base64ImageBytes: string = response.generatedImages[0].image.imageBytes;
       return `data:image/png;base64,${base64ImageBytes}`;
     } else {
-      throw new Error('لم يتم إنشاء أي صور.');
+      throw new Error('ERROR_IMAGE_GENERATION');
     }
   } catch (error) {
     console.error('Error in generateImage:', error);
-    throw new Error('فشل في إنشاء الصورة.');
+    throw new Error('ERROR_IMAGE_GENERATION');
   }
 };
 
-export const getChatSession = (): Chat => {
+export const getChatSession = (systemInstruction: string): Chat => {
     return ai.chats.create({
         model: 'gemini-2.5-flash',
         config: {
-          systemInstruction: 'أنت مساعد ودود ومفيد يتحدث باللغة العربية.',
+          systemInstruction: systemInstruction,
         }
     });
 };
@@ -70,6 +69,6 @@ export const getChatResponse = async (chat: Chat, prompt: string): Promise<strin
     return response.text;
   } catch (error) {
     console.error('Error in getChatResponse:', error);
-    throw new Error('فشل في الحصول على رد الدردشة.');
+    throw new Error('ERROR_CHAT_RESPONSE');
   }
 };

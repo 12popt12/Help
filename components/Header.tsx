@@ -1,38 +1,27 @@
-
 import React from 'react';
-import { APP_TITLE, MODELS } from '../constants';
+import { MODELS } from '../constants';
 import { ModelType } from '../types';
+import { useAppContext } from '../contexts/AppContext';
 
 interface HeaderProps {
+  onMenuClick: () => void;
   activeModel: ModelType;
-  setActiveModel: (model: ModelType) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ activeModel, setActiveModel }) => {
-  return (
-    <header className="bg-gray-800/50 backdrop-blur-sm p-4 border-b border-gray-700 sticky top-0 z-10">
-      <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-xl font-bold text-cyan-400">{APP_TITLE}</h1>
-        <div className="flex bg-gray-900 rounded-full p-1 border border-gray-700">
-          {MODELS.map((model) => {
-            const isActive = activeModel === model.id;
-            const isBetaAndActive = model.id === ModelType.BETA && isActive;
+const Header: React.FC<HeaderProps> = ({ onMenuClick, activeModel }) => {
+  const { t } = useAppContext();
+  const modelNameKey = MODELS.find(m => m.id === activeModel)?.nameKey || '';
+  const modelName = t(modelNameKey);
 
-            return (
-              <button
-                key={model.id}
-                onClick={() => setActiveModel(model.id)}
-                className={`px-4 py-1 text-sm font-medium rounded-full transition-colors duration-200 focus:outline-none ${
-                  isActive
-                    ? 'bg-cyan-500 text-white shadow'
-                    : 'text-gray-300 hover:bg-gray-700'
-                } ${isBetaAndActive ? 'beta-active-glitch' : ''}`}
-              >
-                {model.name}
-              </button>
-            );
-          })}
-        </div>
+  return (
+    <header className="bg-gray-200/50 dark:bg-gray-800/50 backdrop-blur-sm p-4 border-b border-gray-300 dark:border-gray-700 sticky top-0 z-10 lg:hidden">
+      <div className="container mx-auto flex justify-between items-center">
+        <h1 className="text-lg font-bold text-gray-800 dark:text-white">{modelName}</h1>
+        <button onClick={onMenuClick} className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white focus:outline-none" aria-label={t('HEADER_MENU_OPEN_LABEL')}>
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
       </div>
     </header>
   );
